@@ -10,6 +10,14 @@ The project shows Python programming, such as functions, logging, environment se
 
 ---
 
+#### Author
+
+**Nyi Nyi Phyo**
+
+* CS50P Final Project Submission
+* City, Country: <Yangon, Myanmar>
+* Date: <Submission Date>
+
 ## Features
 
 1. **File Monitoring:**  
@@ -74,11 +82,4 @@ CS50P-project/
 * Include a web interface/dashboard for alerts.
 
 ---
-
-#### Author
-
-**Nyi Nyi Phyo**
-CS50P Final Project Submission
-City, Country: \<Yangon, Myanmar>
-Date: <Submission Date>
 
