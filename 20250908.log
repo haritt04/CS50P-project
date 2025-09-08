@@ -1,0 +1,9 @@
+[2025-09-08 11:39:59] Test message
+[2025-09-08 11:42:14] Test message
+[2025-09-08 11:45:35] Test message
+[2025-09-08 13:03:45] Exception during file check: [WinError 3] The system cannot find the path specified: './files_to_check/'
+[2025-09-08 13:04:06] No file found with pattern filename_pattern_20250908_*
+[2025-09-08 14:09:24] No file found with pattern filename_pattern_20250908_*
+[2025-09-08 14:09:55] No file found with pattern filename_pattern_20250908_*
+[2025-09-08 14:10:47] No file found with pattern filename_pattern_20250908_*
+[2025-09-08 14:13:08] No file found with pattern filename_pattern_20250908_*
