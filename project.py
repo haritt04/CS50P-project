@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 File Missing Alert System
 -----------------------------------
@@ -20,10 +19,10 @@ SENDER_EMAIL = os.getenv("SENDER_EMAIL", "mediationalert@@gmail.com")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", "")
 RECEIVER_EMAILS = os.getenv("RECEIVER_EMAILS", "harrynyinyi183@gmail.com,harrynyinyi184@gmail.com").split(",")
 LOCAL_PATH = os.getenv("LOCAL_PATH", "./files_to_check/")
-FILENAME_PATTERN = os.getenv("FILENAME_PATTERN", "filename_pattern_")
+FILENAME_PATTERN = os.getenv("FILENAME_PATTERN", "filename_pattern")
 LOG_FILE = f"{datetime.datetime.now().strftime('%Y%m%d')}.log"
 ALLOWED_START = datetime.datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
-ALLOWED_END = datetime.datetime.now().replace(hour=14, minute=30, second=0, microsecond=0)
+ALLOWED_END = datetime.datetime.now().replace(hour=16, minute=30, second=0, microsecond=0)
 
 
 # Function 1
@@ -37,7 +36,7 @@ def check_file(local_path=None):
         path_to_check = local_path or LOCAL_PATH
         files = os.listdir(path_to_check)
         today_str = datetime.datetime.now().strftime("%Y%m%d")
-        pattern = f"{FILENAME_PATTERN}{today_str}_"
+        pattern = f"{FILENAME_PATTERN}"
         matched_files = [f for f in files if pattern in f]
 
         if not matched_files:
@@ -64,6 +63,7 @@ def log_result(message: str, log_file: str = None):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open(log_file_to_use, "a", encoding="utf-8") as f:
         f.write(f"[{timestamp}] {message}\n")
+
 
 # Function 3
 def send_email_alert(subject: str, body: str, attachment: str = None):
