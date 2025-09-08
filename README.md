@@ -1,110 +1,147 @@
-# Missing File Alert System
+# File Missing Alert System
 
-#### Video Demo:  <URL HERE>
+#### Video Demo: <URL HERE>
 
-#### Description: 
-File Missing Alert System is a Python program that will work to track a local folder, where it is assumed that the files fit a specific template. It checks that these files are not empty. When a file is deleted, or it contains zero bytes, an email notification is issued to the specified recipients and a record is made in a inserted time-stamped log file.
+#### Description:
 
-The project is coded fully with one main and other functions: `checkfile()`, `log_result()`, `send_email_alert()` and `main()`. The program is writeable and maintainable as each functionality is modular. 
+The File Missing Alert System is a python project that will be used to track files in a local directory that match a given pattern. Where there is a missing file or an empty file, an alert is raised by the system. Timestamps are added to all results, both successes, and failures.
 
-`check_file()` scans files that meet the desired pattern and validates their sizes. `log_result()` writes detailed logs with timestamps of every check that has been completed. 
-`send_email_alert()` sends emails to recipients and logs may be attached to their email. `main()` coordinates all the workflow, so that only checks within a specified time range are run.
-
-To test, `test_project.py` contains pytest functions `check_file()`, `log_result()` and `send_email_alert()` to make sure it will work without actually sending real emails. Environment variables are configuration values defined as email credentials, file paths, and filename patterns, and can be easily modified using `.env.example`.
-
-This project illustrates file monitoring, logging, email notification and simple testing principles. It may be expanded to several directories, dynamic pattern of files, or to interoperability with web dashboards. The modular architecture makes the program maintainable and scalable in real world.
+The project shows Python programming, such as functions, logging, environment setup, and pytest testing. It is organized according to CS50P final project requirements.
 
 ---
 
 ## Features
-- Checks a local folder for files matching a defined pattern.
-- Validates that the file is non-empty.
-- Sends an email alert if the file is missing or empty.
-- Attaches the log file to email alerts for review.
-- Logs results with timestamps for record keeping.
-- Configurable file pattern, directory, and email recipients.
+
+1. **File Monitoring:**  
+   Checks if files with a specific naming pattern exist in a local directory and verifies that they are not empty.
+
+2. **Logging:**  
+   Writes all events to a timestamped log file in the project folder for tracking file status.
+
+3. **Alert System:**  
+   Instead of sending email (SMTP), which can be blocked in restricted environments, this project:
+   - Prints alerts to the console.
+   - Saves alerts to a structured JSON file (`alerts.json`) for easy review.
+
+4. **Configuration via Environment Variables:**  
+   Supports `.env` configuration for the following variables:
+   - `LOCAL_PATH` – Path to the directory to monitor.
+   - `FILENAME_PATTERN` – Base pattern to check in filenames.
+   - Optional email credentials placeholders (not required for local testing).
+
+5. **Testable Functions:**  
+   The project includes four main functions:
+   - `check_file()` – Verifies file existence and size.
+   - `log_result()` – Logs results to the log file.
+   - `send_alert()` – Simulates alerts via console and JSON.
+   - `main()` – Runs the complete workflow.
 
 ---
 
-## Requirements
-- Python 3.8+
-- Gmail account for SMTP (use App Password for authentication)
-- Standard Python libraries (`os`, `datetime`, `smtplib`, `email`)  
----
+## Project Structure
 
-## Setup Instructions
+```
 
-1. **Clone the repository**
-```bash
-git clone <repository_url>
-cd file-alert
+CS50P-project/
+├── project.py            # Main project code
+├── test\_project.py       # Pytest tests for main functions
+├── README.md             # Project documentation
+├── .env.example          # Example environment variables file
+├── files\_to\_check/       # Directory to place test files
+└── alerts.json           # JSON file storing alerts 
+
 ````
 
-2. **Create and activate a virtual environment** (optional but recommended)
+---
+
+## Getting Started
+
+1. **Clone or download** the repository.
+2. **Install dependencies** (if any are added; currently standard library used):
+   ```bash
+   pip install -r requirements.txt
+````
+
+3. **Create a `.env` file** in the root directory based on `.env.example`:
+
+   ```env
+   LOCAL_PATH=./files_to_check/
+   FILENAME_PATTERN=filename_pattern_
+   ```
+4. **Add test files** in the `files_to_check/` directory to simulate missing or existing files.
+5. **Run the project**:
+
+   ```bash
+   python project.py
+   ```
+6. **Check logs**:
+
+   * Console output will show alerts.
+   * `alerts.json` will contain structured JSON records for each alert.
+   * Timestamped log file (`YYYYMMDD.log`) will record all checks.
+
+---
+
+## Testing
+
+The project includes `pytest` test cases for all main functions.
+
+Run tests with:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate      # Linux/Mac
-venv\Scripts\activate         # Windows
+pytest test_project.py
 ```
 
-3. **Install dependencies** (if using `.env` and `python-dotenv`)
+Test coverage:
 
-```bash
-pip install -r requirements.txt
-```
-
-4. **Configuration**
-
-* Copy `.env.example` to `.env` or edit the script directly.
-* Provide your own **test Gmail account** for sending emails (do not use personal/company email).
-* Update the following values:
-
-  * `SENDER_EMAIL` → Gmail sender
-  * `EMAIL_PASSWORD` → App Password
-  * `RECEIVER_EMAILS` → comma-separated list of recipients
-  * `LOCAL_PATH` → directory to monitor
-  * `FILENAME_PATTERN` → pattern to match filenames (e.g., `filename_pattern_YYYYMMDD_`)
+* File existence and size verification.
+* Logging function writes correctly.
+* Alert simulation writes to console and JSON.
 
 ---
 
-## Running the Script
-
-```bash
-python file_alert.py
-```
-
-* The script only runs during the allowed time window (default 01:00–01:30).
-* If the file is missing or empty, an email alert is sent and a log is saved.
-* If the file exists and is valid, a success email is sent with the log attached.
-
----
-
-## Sample Files
-
-Include a sample file in `files_to_check/` to demonstrate functionality.
-
----
-
-## Notes
-
-* For security, **do not commit real email credentials**.
-* The system can be extended to check multiple files, different directories, or even send SMS using APIs like Twilio.
-* Logs are created daily with the date in the filename (`YYYYMMDD.log`) for easy tracking.
-
----
-
-## Example Log Entry
+## Example `.env.example`
 
 ```
-[2025-09-08 01:15:03] File filename_pattern_20250908_test.csv found with size 1024 bytes.
-```
+# Directory to monitor
+LOCAL_PATH=./files_to_check/
 
-* Shows timestamped results of file check and alerts sent.
+# Filename base pattern
+FILENAME_PATTERN=filename_pattern_
+
+
+**Note:** Alerts are handled via console output and `alerts.json`.
 
 ---
 
-## Author
+## Design Decisions
 
-Nyi Nyi Phyo
+1. **No SMTP for Alerts:**
+    SMTP could not work in limited networks. The project records notifications to JSON and displays them on the console so that they can be reviewable. 
+
+2. **Configurable Paths and Patterns:**
+    Environment variables can also be customized to enable all paths and pattern of files to be tested flexibly.
+
+3. **Testable Functions:**
+   Functions are also testable and modular with `pytest`. This has optional overrides in paths and log files.
+
+4. **Logging and Alerts:**
+    Uses human-readable logs and well-structured JSON alerts to show that there is a professionally-written software engineering process.
+---
+
+## Future Enhancements
+
+* Optionally integrate actual SMTP or SMS alerts for production deployment.
+* Extend monitoring to multiple directories or recursive checks.
+* Add more complex filename patterns and advanced alert logic.
+* Include a web interface/dashboard for alerts.
+
+---
+
+#### Author
+
+**Nyi Nyi Phyo**
+CS50P Final Project Submission
+City, Country: \<Yangon, Myanmar>
+Date: <Submission Date>
 

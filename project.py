@@ -8,21 +8,20 @@ Logs all results to a timestamped log file.
 
 import os
 import datetime
-import smtplib
+import json
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
 load_dotenv()  # Load environment variables from .env file
 
 # Configuration
-SENDER_EMAIL = os.getenv("SENDER_EMAIL", "mediationalert@@gmail.com")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", "")
-RECEIVER_EMAILS = os.getenv("RECEIVER_EMAILS", "harrynyinyi183@gmail.com,harrynyinyi184@gmail.com").split(",")
+
 LOCAL_PATH = os.getenv("LOCAL_PATH", "./files_to_check/")
 FILENAME_PATTERN = os.getenv("FILENAME_PATTERN", "filename_pattern")
 LOG_FILE = f"{datetime.datetime.now().strftime('%Y%m%d')}.log"
 ALLOWED_START = datetime.datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
-ALLOWED_END = datetime.datetime.now().replace(hour=16, minute=30, second=0, microsecond=0)
+ALLOWED_END = datetime.datetime.now().replace(hour=14, minute=30, second=0, microsecond=0)
+ALERT_FILE = "alerts.json"   
 
 
 # Function 1
@@ -66,30 +65,21 @@ def log_result(message: str, log_file: str = None):
 
 
 # Function 3
-def send_email_alert(subject: str, body: str, attachment: str = None):
-    """Send email alert with optional log attachment."""
-    msg = EmailMessage()
-    msg["Subject"] = subject
-    msg["From"] = SENDER_EMAIL
-    msg["To"] = ", ".join(RECEIVER_EMAILS)
-    msg.set_content(body)
-    msg.add_alternative(f"<html><body><h2>File Alert</h2><p>{body}</p></body></html>", subtype="html")
+def send_alert(subject, body, alert_file=None):
+    """
+    Simulates sending an alert by logging to a file and printing to console.
+    """
+    print(f"ALERT: {subject}\n{body}")
 
-    if attachment and os.path.exists(attachment):
-        with open(attachment, "rb") as f:
-            file_data = f.read()
-            file_name = os.path.basename(attachment)
-            msg.add_attachment(file_data, maintype="application", subtype="octet-stream", filename=file_name)
+    alert = {
+        "time": datetime.datetime.now().isoformat(),
+        "subject": subject,
+        "body": body
+    }
 
-    try:
-        with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
-            smtp.starttls()
-            smtp.login(SENDER_EMAIL, EMAIL_PASSWORD)
-            smtp.send_message(msg)
-        return True
-    except Exception as e:
-        print(f"Failed to send email: {e}")
-        return False
+    alert_file_to_use = alert_file or ALERT_FILE
+    with open(alert_file_to_use, "a", encoding="utf-8") as f:
+        f.write(json.dumps(alert) + "\n")
 
 
 # Function 4 (main)
@@ -105,9 +95,9 @@ def main():
     print(message)
 
     if not success:
-        send_email_alert("File Missing or Empty", message, LOG_FILE)
+        send_alert("File Missing or Empty", message)
     else:
-        send_email_alert("File Successfully Received", message, LOG_FILE)
+        send_alert("File Successfully Received", message)
 
 
 if __name__ == "__main__":
