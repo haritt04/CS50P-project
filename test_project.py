@@ -9,7 +9,6 @@ def test_check_file(tmp_path):
     dummy_file = tmp_path / f"filename_pattern_{today_str}_test.txt"
     dummy_file.write_text("data")
 
-    # temporarily override LOCAL_PATH
     from project import LOCAL_PATH
     old_path = LOCAL_PATH
     try:
@@ -23,7 +22,6 @@ def test_check_file(tmp_path):
 
 
 def test_log_result(tmp_path):
-    # temporarily override LOG_FILE
     from project import LOG_FILE
     old_log = LOG_FILE
     test_log_file = tmp_path / "test.log"
@@ -41,7 +39,6 @@ def test_log_result(tmp_path):
 
 
 def test_send_alert(tmp_path):
-    # redirect alerts.json to tmp_path
     test_alerts = tmp_path / "alerts.json"
     import project
 
@@ -60,3 +57,4 @@ def test_send_alert(tmp_path):
     finally:
         if old_alert_file:
             project.ALERT_FILE = old_alert_file
+
