@@ -1,20 +1,10 @@
-"""
-File Missing Alert System
------------------------------------
-Checks a local directory for files matching a pattern.
-Sends an email alert if files are missing or empty.
-Logs all results to a timestamped log file.
-"""
-
 import os
 import datetime
 import json
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env file
-
-# Configuration
+load_dotenv() 
 
 LOCAL_PATH = os.getenv("LOCAL_PATH", "./files_to_check/")
 FILENAME_PATTERN = os.getenv("FILENAME_PATTERN", "filename_pattern")
@@ -23,14 +13,8 @@ ALLOWED_START = datetime.datetime.now().replace(hour=12, minute=0, second=0, mic
 ALLOWED_END = datetime.datetime.now().replace(hour=14, minute=30, second=0, microsecond=0)
 ALERT_FILE = "alerts.json"   
 
-
 # Function 1
 def check_file(local_path=None):
-    """
-    Check if today's file exists in LOCAL_PATH and is non-empty.
-    Optional: pass local_path to override module-level LOCAL_PATH (for testing)
-    Returns: (bool, str) -> success, message
-    """
     try:
         path_to_check = local_path or LOCAL_PATH
         files = os.listdir(path_to_check)
@@ -102,3 +86,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
