@@ -16,7 +16,7 @@ The project shows Python programming, such as functions, logging, environment se
 
 * CS50P Final Project Submission
 * City, Country: <Yangon, Myanmar>
-* Date: <Submission Date>
+* Date: <September 30, 2025>
 
 ## Features
 
@@ -82,4 +82,5 @@ CS50P-project/
 * Include a web interface/dashboard for alerts.
 
 ---
+
 
